@@ -93,7 +93,7 @@ def train_eval(
     eval_loss_interval=100,
     eval_episodes=1,
     fused_train_steps=100,
-    sequence_length=2,
+    sequence_length=50, # changed it to 50 from 2
     uniform_boundary_buffer=0.05,
     for_rnn=False,
     flatten_action=True,

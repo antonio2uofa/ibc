@@ -30,6 +30,8 @@ from ibc.environments.block_pushing import block_pushing_multimodal
 from ibc.environments.collect.utils import get_oracle as get_oracle_module
 from ibc.environments.particle import particle  # pylint: disable=unused-import
 from ibc.environments.particle import particle_oracles
+from ibc.environments.gaze import gaze  # pylint: disable=unused-import
+from ibc.environments.gaze import gaze_oracles
 from tf_agents.drivers import py_driver
 from tf_agents.environments import suite_gym
 from tf_agents.environments import wrappers
@@ -40,6 +42,8 @@ from tf_agents.policies import py_tf_eager_policy
 from tf_agents.policies import random_py_policy
 from tf_agents.system import system_multiprocessing as multiprocessing
 from tf_agents.utils import example_encoding_dataset
+import ibc.ibc.agents.ibc_policy
+
 
 
 flags.DEFINE_multi_string('gin_file', None, 'Paths to the gin-config files.')
@@ -57,7 +61,7 @@ flags.DEFINE_string('output_path', '/tmp/ibc/policy_eval/',
 flags.DEFINE_enum(
     'task', None,
     ['REACH', 'PUSH', 'INSERT', 'REACH_NORMALIZED', 'PUSH_NORMALIZED',
-     'PARTICLE', 'PUSH_DISCONTINUOUS', 'PUSH_MULTIMODAL'],
+     'PARTICLE', 'PUSH_DISCONTINUOUS', 'PUSH_MULTIMODAL', 'GAZE'],
     'Which task of the enum to evaluate.')
 flags.DEFINE_bool('use_image_obs', False,
                   'Whether to include image observations.')
@@ -79,7 +83,6 @@ flags.DEFINE_string(
     'to the given path.')
 flags.DEFINE_integer('replicas', None,
                      'Number of parallel replicas generating evaluations.')
-
 
 def evaluate(num_episodes,
              task,
@@ -109,6 +112,9 @@ def evaluate(num_episodes,
     # Options are supported through gin, registered env is the same.
     env_name = 'Particle-v0'
     assert not (shared_memory or use_image_obs)  # Not supported.
+  elif task == 'GAZE':
+    # Options are supported through gin, registered env is the same.
+    env_name = 'Gaze-v0'
   else:
     raise ValueError("I don't recognize this task to eval.")
 
@@ -165,6 +171,7 @@ def evaluate(num_episodes,
       py_metrics.AverageReturnMetric(buffer_size=num_episodes),
       py_metrics.AverageEpisodeLengthMetric(buffer_size=num_episodes),
   ]
+  
   env_metrics, success_metric = env.get_metrics(num_episodes)
   metrics += env_metrics
 

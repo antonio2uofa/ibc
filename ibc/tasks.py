@@ -16,7 +16,7 @@
 """Defines all the tasks supported. Used to define enums in train_eval, etc."""
 
 IBC_TASKS = ['REACH', 'PUSH', 'INSERT', 'PARTICLE', 'PUSH_DISCONTINUOUS',
-             'PUSH_MULTIMODAL']
+             'PUSH_MULTIMODAL', 'GAZE'] # CHANGED
 ADROIT_TASKS = ['pen-human-v0', 'hammer-human-v0', 'door-human-v0',
                 'relocate-human-v0',]
 D4RL_TASKS = ['antmaze-large-diverse-v0',

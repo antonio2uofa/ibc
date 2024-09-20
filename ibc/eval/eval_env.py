@@ -52,6 +52,10 @@ def get_env_name(task, shared_memory_eval, use_image_obs=False):
     env_name = 'Particle-v0'
     assert not shared_memory_eval  # Not supported.
     assert not use_image_obs  # Not supported.
+  elif task == 'GAZE':
+    env_name = 'Gaze-v0'
+    assert not shared_memory_eval  # Not supported.
+    assert not use_image_obs  # Not supported.
   elif task in tasks.D4RL_TASKS:
     env_name = task
     assert not use_image_obs  # Not supported.

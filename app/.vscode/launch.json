@@ -1,0 +1,158 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Train Eval Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/ibc/train_eval.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--alsologtostderr",
+                "--gin_file=ibc/ibc/configs/particle/mlp_ebm_langevin.gin",
+                "--task=PARTICLE",
+                "--tag=langevin ",
+                "--add_time=True",
+                "--gin_bindings=train_eval.dataset_path='ibc/data/particle/2d_oracle_particle*.tfrecord'",
+                "--gin_bindings=ParticleEnv.n_dim=2",
+                "--video"
+            ]
+        }, 
+        {
+            "name": "Debug Custom IBC Train Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/ibc/train_eval_custom.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--alsologtostderr",
+                "--gin_file=ibc/ibc/configs/particle/mlp_ebm_langevin.gin",
+                "--task=GAZE",
+                "--tag=gaze-all-seq-2",
+                "--add_time=True",
+                "--gin_bindings=train_eval.dataset_path='/app/ibc/data/gaze/2d_allsessions_data.tfrecord'",
+                "--gin_bindings=GazeEnv.n_dim=2",
+            ]
+        },
+        {
+            "name": "Debug Data Generation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/data/policy_eval.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--alsologtostderr",
+                "--num_episodes=200",
+                "--policy=particle_green_then_blue",
+                "--task=PARTICLE",
+                "--dataset_path=ibc/data/particle/2d_oracle_particle.tfrecord",
+                "--replicas=10",
+                "--use_image_obs=False"
+            ]
+        }, 
+        {
+            "name": "Debug Custom MSE Train Script",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/ibc/train_eval_custom.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--alsologtostderr",
+                "--gin_file=ibc/ibc/configs/particle/mlp_mse.gin",
+                "--task=GAZE",
+                "--tag=mse",
+                "--add_time=True",
+                "--gin_bindings=train_eval.dataset_path='/app/ibc/data/gaze/2d_allsessions_data.tfrecord'",
+                "--gin_bindings=GazeEnv.n_dim=2",
+            ]
+        },
+        {
+            "name": "Debug IBC L3ad5 Evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/data/policy_eval.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--alsologtostderr",
+                "--num_episodes=200",
+                "--saved_model_path=/tmp/ibc_logs/mlp_ebm_langevin/gaze/20240911-030749/policies/policy",
+                "--task=GAZE",
+                "--dataset_path=/app/ibc/data/gaze/evaluation/2d_L3ad5_data.tfrecord",
+                "--use_image_obs=False",
+                "--checkpoint_path=/tmp/ibc_logs/mlp_ebm_langevin/gaze/20240911-030749/policies/checkpoints/policy_checkpoint_0000010000",
+                "--gin_bindings=GazeEnv.n_dim=2",
+                "--gin_bindings=GazeEnv.eval=True",
+                "--gin_bindings=GazeEnv.eval_dir='/app/output.csv'",
+                "--history_length=2",
+            ]
+        },
+        {
+            "name": "Debug MSE L3ad5 Evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/data/policy_eval.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--alsologtostderr",
+                "--num_episodes=200",
+                "--saved_model_path=/tmp/ibc_logs/mlp_mse/mse/20240911-054622/policies/policy",
+                "--task=GAZE",
+                "--dataset_path=/app/ibc/data/gaze/evaluation/mse_2d_L3ad5_data.tfrecord",
+                "--use_image_obs=False",
+                "--checkpoint_path=/tmp/ibc_logs/mlp_mse/mse/20240911-054622/policies/checkpoints/policy_checkpoint_0000010000",
+                "--gin_bindings=GazeEnv.n_dim=2",
+                "--gin_bindings=GazeEnv.eval=True",
+                "--gin_bindings=GazeEnv.eval_dir='/app/output.csv'",
+                "--history_length=2",
+            ]
+        },
+        {
+            "name": "Debug IBC All Concat Evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/data/policy_eval.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--alsologtostderr",
+                "--num_episodes=200",
+                "--saved_model_path=/tmp/ibc_logs/gaze/20240912-123610-all-concat/policies/policy",
+                "--task=GAZE",
+                "--dataset_path=/app/ibc/data/gaze/evaluation_fixed/all_concat20220630_L4c-D8.tfrecord",
+                "--use_image_obs=False",
+                "--checkpoint_path=/tmp/ibc_logs/gaze/20240912-123610-all-concat/policies/checkpoints/policy_checkpoint_0000100000",
+                "--gin_bindings=GazeEnv.n_dim=2",
+                "--gin_bindings=GazeEnv.eval=True",
+                "--gin_bindings=GazeEnv.eval_dir='/app/test_set_pt_and_tf/20220630_L4c-D8_l2cs/output.csv'",
+                "--history_length=2",
+            ]
+        },
+        {
+            "name": "Debug MSE All Concat Evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/ibc/data/policy_eval.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--alsologtostderr",
+                "--num_episodes=200",
+                "--saved_model_path=/tmp/ibc_logs/mlp_mse/mse/20240913-000339/policies/policy",
+                "--task=GAZE",
+                "--dataset_path=/app/ibc/data/gaze/evaluation_fixed/all_concat_mse_20220630_L4c-D8.tfrecord",
+                "--use_image_obs=False",
+                "--checkpoint_path=/tmp/ibc_logs/mlp_mse/mse/20240913-000339/policies/checkpoints/policy_checkpoint_0000035000",
+                "--gin_bindings=GazeEnv.n_dim=2",
+                "--gin_bindings=GazeEnv.eval=True",
+                "--gin_bindings=GazeEnv.eval_dir='/app/test_set_pt_and_tf/20220630_L4c-D8_l2cs/output.csv'",
+                "--history_length=2",
+            ]
+        },
+    ]
+}

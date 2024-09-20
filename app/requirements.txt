@@ -1,0 +1,12 @@
+python3 -m pip install --upgrade pip
+pip install \
+  absl-py \
+  gin-config \
+  gym \
+  tf-agents \
+  tensorflow \
+  scipy \
+  pybullet \
+  matplotlib \
+  tqdm \
+  opencv-python

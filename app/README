@@ -1,0 +1,23 @@
+Please place the Dockerfile in the same folder as the outer ibc directory. Meaning the folder that contains the whole repository and is called ibc. The dataset should be downloaded when you run the docker file.
+
+Make sure to run:
+
+docker build -t <name_of_image> .
+
+docker run --gpus all -it <name_of_image> /bin/bash
+
+Once everything is running, you can run the command to train the block pushing task:
+
+python3 ibc/ibc/train_eval.py -- \
+  --alsologtostderr \
+  --gin_file=ibc/ibc/configs/pushing_states/mlp_ebm.gin \
+  --task=PUSH \
+  --tag=ibc_dfo \
+  --add_time=True \
+  --gin_bindings="train_eval.dataset_path='ibc/data/block_push_states_location/oracle_push*.tfrecord'" \
+  --video
+
+If you encounter an error where the ibc module cannot be found then run this line in the docker terminal while in the /app directory:
+
+export PYTHONPATH=$PYTHONPATH:${PWD}
+
